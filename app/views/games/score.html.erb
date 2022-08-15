@@ -1,0 +1,27 @@
+<div class="container m-2 p-2">
+  <h1>Scores</h1>
+  <%finish = Time.now%>
+
+  <%url = "https://wagon-dictionary.herokuapp.com/#{@word}"%>
+  <%word_check = JSON.parse(URI.open(url).read)%>
+  <%word_check["found"]%>
+
+
+  <%if word_check["found"]%>
+  <%a = ""%>
+    <%@word.split("").each do |letter|%>
+      <%if @word.upcase.count(letter.upcase) > @letters.count(letter.upcase)%>
+        <%a = @word%>
+      <%end%>
+    <%end%>
+    <%if a.empty?%>
+      <p>Congrats your time was <strong><%="#{(Time.now - Time.at(@start_time.to_i)).round(2)}"%></strong> seconds and your word had <%=@word.length%> letters, you score <%=(@word.length/(Time.now - Time.at(@start_time.to_i))*10).round(2)%> points.</p>
+    <%else%>
+      <p>Sorry but <strong><%=a%></strong> can`t be built out of <strong><%=@letters%></strong></p>
+    <%end%>
+  <%else%>
+  <%="#{@word} is not an english word"%>
+  <%end%>
+
+  <%= link_to "Try a new Word", new_path %>
+</div>
